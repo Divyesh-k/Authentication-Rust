@@ -1,0 +1,27 @@
+{
+    "env": "production",
+    "logger": {
+        "exceptionLogFileName": "exceptions.log",
+        "httpErrorLogFileName": "httpError.log",
+        "httpLogFileName": "http.log",
+        "httpLogformat": "",
+        "logFileName": "logs.log",
+        "logFilePrefix": "",
+        "logFileSize": 17408,
+        "path": "./logs",
+        "all_logs_common_file_path": "logs/step/All-Logs.log",
+        "roller_base_start": 1,
+        "roller_max_count": 999,
+        "roller_filepath_pattern": "logs/LogsFiles/All-Logs_{}.log"
+    },
+    "elasticsearch": {
+        "connectionurl": "",
+        "username": "",
+        "password": "",
+        "default-index": ""
+    },
+    "port": 3000,
+    "tikv":{
+        "url": "127.0.0.1:2379"
+    }
+}
