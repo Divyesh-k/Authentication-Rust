@@ -53,5 +53,7 @@ async fn main() {
     //     .await
     //     .unwrap();
 
-    delete("hii".to_string(), "1".to_string()).await;
+    // delete("hii".to_string(), "1".to_string()).await;
+
+    
 }   
