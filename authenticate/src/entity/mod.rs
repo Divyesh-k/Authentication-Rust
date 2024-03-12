@@ -16,9 +16,10 @@ pub struct Message<T>{
     pub data : T
 }
 
+#[derive(Debug , Serialize , Deserialize)]
 pub struct TokenClaims {
     pub sub : String,
-    pub iam : String,
+    pub iat : usize,
     pub exp : usize
 }
 

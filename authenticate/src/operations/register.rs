@@ -4,10 +4,11 @@ use axum::{
     Json,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use serde_json::json;
 
 use crate::{
     entity::{Message, User},
-    utils::db_config::put_data,
+    utils::{db_config::put_data, elastic_config::create, logger},
 };
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 
@@ -73,11 +74,25 @@ pub async fn register_user(Json(mut payload): Json<User>) -> Result<Response, St
 
     //adding the data into the database
     put_data(
-        id,
+        id.to_owned(),
         serde_json::to_string(&payload).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
     )
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    println!("data added into the database");
+
+    //adding data into elastic search
+    let data = create("user".to_string(), id.to_owned() , json!(
+        {
+            "name" : payload.username,
+            "email" : payload.email,
+            "password" : payload.password,
+            "authentication" : payload.authentication
+        }
+    )).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    println!("data is added into the elastic{:#?}" , data);
 
     // make response
     let resp = Json(Message {
